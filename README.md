@@ -1,4 +1,4 @@
-# 777_Organizacion-Lenguajes-y-Compiladores-1_Ejemplos
+# 777_Organizacion-Lenguajes-y-Compiladores-1
 Contenido, ejemplos y recursos del curso de Organización de Lenguajes y Compiladores 1.
 
 ## 📌 Guía de Trabajo para Tutores Auxiliares
