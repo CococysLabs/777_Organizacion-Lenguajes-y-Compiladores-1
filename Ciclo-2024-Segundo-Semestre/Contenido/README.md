@@ -1,0 +1,22 @@
+# [777] Organización de Lenguajes y Compiladores 1 - ciclo-1
+
+**Curso:** Organización de Lenguajes y Compiladores 1  
+**Ciclo:** ciclo-1
+
+## 📁 Contenido
+
+El material de este ciclo está organizado según la estructura original del profesor/catedrático.
+
+Explora las carpetas para encontrar:
+- Material de clase
+- Proyectos
+- Tareas y ejercicios
+- Recursos adicionales
+
+## 🤝 Contribuir
+
+Para contribuir con contenido de este ciclo, sigue las instrucciones en el [README principal del curso](../README.md).
+
+---
+
+**Ruta:** [Área de Computación](../../) → [777](..) → ciclo-1
