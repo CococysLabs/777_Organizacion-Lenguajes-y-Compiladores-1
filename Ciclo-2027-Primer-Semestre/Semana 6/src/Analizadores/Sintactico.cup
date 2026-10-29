@@ -1,0 +1,293 @@
+package Analizadores;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+
+import semana6.Mago;
+import semana6.Guerrero;
+import semana6.Partida;
+import semana6.Ejecucion;
+import semana6.Entorno;
+import semana6.Regla;
+
+
+parser code
+{:
+
+    public void syntax_error(Symbol s){
+
+        System.out.println(
+            "Error Sintactico en la linea "
+            + s.right
+            + " y columna "
+            + s.left
+            + ". No se esperaba el componente: "
+            + s.value
+            + "."
+        );
+    }
+
+
+    public void unrecovered_syntax_error(Symbol s){
+
+        System.out.println(
+            "Error Sintactico no recuperable en la linea "
+            + s.right
+            + " y columna "
+            + s.left
+            + ". No se esperaba el componente: "
+            + s.value
+            + "."
+        );
+    }
+
+:}
+
+
+// ========================================
+// VARIABLES
+// ========================================
+
+action code
+{:
+
+    Entorno entorno =
+            new Entorno();
+
+:}
+
+
+// ========================================
+// TERMINALES
+// ========================================
+
+terminal String ID;
+terminal String ENTERO;
+
+terminal String MAGE;
+terminal String WARRIOR;
+
+terminal String INITIAL;
+terminal String RULES;
+terminal String IF;
+terminal String THEN;
+terminal String ELSE;
+terminal String SELF_RESOURCE;
+
+terminal String MENOR_IGUAL;
+terminal String MAYOR_IGUAL;
+terminal String IGUAL;
+terminal String DIFERENTE;
+terminal String MENOR;
+terminal String MAYOR;
+
+terminal String MATCH;
+terminal String PLAYERS;
+terminal String ROUNDS;
+
+terminal String MAIN;
+terminal String RUN;
+terminal String WITH;
+terminal String SEED;
+
+terminal String LLAVE1;
+terminal String LLAVE2;
+
+terminal String CORCHETE1;
+terminal String CORCHETE2;
+
+terminal String DOS_PUNTOS;
+terminal String COMA;
+
+
+// ========================================
+// NO TERMINALES
+// ========================================
+
+nonterminal Entorno INICIO;
+
+nonterminal ESTRATEGIAS;
+nonterminal ESTRATEGIA;
+
+nonterminal ArrayList<Regla> LISTA_REGLAS;
+nonterminal Regla REGLA;
+nonterminal String ACCION_DEFECTO;
+
+nonterminal PARTIDAS;
+nonterminal PARTIDA;
+
+nonterminal PRINCIPAL;
+
+nonterminal EJECUCIONES;
+nonterminal EJECUCION;
+
+
+// ========================================
+// INICIO
+// ========================================
+
+start with INICIO;
+
+
+// ========================================
+// GRAMATICA
+// ========================================
+
+INICIO ::= ESTRATEGIAS PARTIDAS PRINCIPAL
+{:
+
+    RESULT = entorno;
+
+:}
+;
+
+
+// ========================================
+// ESTRATEGIAS
+// ========================================
+
+ESTRATEGIAS ::= ESTRATEGIAS ESTRATEGIA
+              | ESTRATEGIA
+;
+
+
+ESTRATEGIA ::= MAGE ID:nombre LLAVE1 INITIAL DOS_PUNTOS ID:init RULES DOS_PUNTOS CORCHETE1 LISTA_REGLAS:list ACCION_DEFECTO:def CORCHETE2 LLAVE2
+{:
+    Mago mago = new Mago(nombre, init, list, def);
+    entorno.agregarMago(mago);
+:}
+
+| WARRIOR ID:nombre LLAVE1 INITIAL DOS_PUNTOS ID:init RULES DOS_PUNTOS CORCHETE1 LISTA_REGLAS:list ACCION_DEFECTO:def CORCHETE2 LLAVE2
+{:
+    Guerrero guerrero = new Guerrero(nombre, init, list, def);
+    entorno.agregarGuerrero(guerrero);
+:}
+;
+
+
+LISTA_REGLAS ::= LISTA_REGLAS:list COMA REGLA:r
+{:
+    list.add(r);
+    RESULT = list;
+:}
+| REGLA:r
+{:
+    ArrayList<Regla> list = new ArrayList<>();
+    list.add(r);
+    RESULT = list;
+:}
+;
+
+
+REGLA ::= IF SELF_RESOURCE MENOR_IGUAL ENTERO:val THEN ID:act
+{:
+    RESULT = new Regla("self_resource", "<=", Integer.parseInt(val), act);
+:}
+;
+
+
+ACCION_DEFECTO ::= COMA ELSE ID:act
+{:
+    RESULT = act;
+:}
+| ELSE ID:act
+{:
+    RESULT = act;
+:}
+;
+
+
+// ========================================
+// PARTIDAS
+// ========================================
+
+PARTIDAS ::= PARTIDAS PARTIDA
+           | PARTIDA
+;
+
+
+PARTIDA ::= MATCH ID:nombrePartida
+            LLAVE1
+
+            PLAYERS DOS_PUNTOS
+
+            CORCHETE1
+            ID:jugador1
+            COMA
+            ID:jugador2
+            CORCHETE2
+
+            ROUNDS DOS_PUNTOS ENTERO:rondas
+
+            LLAVE2
+
+{:
+
+    int cantidadRondas =
+        Integer.parseInt(rondas);
+
+    Partida partida =
+        new Partida(
+            nombrePartida,
+            jugador1,
+            jugador2,
+            cantidadRondas
+        );
+
+    entorno.agregarPartida(partida);
+
+:}
+;
+
+
+// ========================================
+// MAIN
+// ========================================
+
+PRINCIPAL ::= MAIN LLAVE1 EJECUCIONES LLAVE2
+;
+
+
+// ========================================
+// VARIOS RUN
+// ========================================
+
+EJECUCIONES ::= EJECUCIONES EJECUCION
+               | EJECUCION
+;
+
+
+// ========================================
+// RUN
+// ========================================
+
+EJECUCION ::= RUN
+              CORCHETE1
+              ID:nombrePartida
+              CORCHETE2
+
+              WITH
+
+              LLAVE1
+
+              SEED DOS_PUNTOS ENTERO:valorSeed
+
+              LLAVE2
+
+{:
+
+    int seed =
+        Integer.parseInt(valorSeed);
+
+    Ejecucion ejecucion =
+        new Ejecucion(
+            nombrePartida,
+            seed
+        );
+
+    entorno.agregarEjecucion(
+        ejecucion
+    );
+
+:}
+;
