@@ -1,19 +1,14 @@
 {
-  "name": "semana-9",
+  "name": "goscript-project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GoScript Interpreter with Web Interface",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"tsc -w",
-    "jison": "jison src/controller/analizador/analizador.jison  && move analizador.js build/controller/analizador"
-
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "jison": "cd backend && npm run jison",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "jison": "^0.4.18"
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

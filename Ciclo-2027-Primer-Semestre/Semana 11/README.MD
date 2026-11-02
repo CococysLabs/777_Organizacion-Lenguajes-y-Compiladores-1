@@ -1,14 +1,42 @@
-# PASOS PARA PODER COMPILAR 
+# GoScript Interpreter - Web Application
 
-### En la raiz del proyecto correr "npm run build" esto detectara cambios en el proyecto y les mostrara donde hay errores
+Esta es una potente herramienta de interpretación para el lenguaje **GoScript**, que incluye un editor web moderno con soporte para archivos `.gst` y un diseño oscuro premium.
 
-### En otra terminal correr " npm run jison" esto para que se ejecute el codigo de jison
+## Estructura del Proyecto
 
-### Y por ultimo ejecutar " node build/index.js " esto corre el archivo principal y muestra el resultado en la terminal
+- `backend/`: Servidor Express que procesa el código utilizando el motor Jison.
+- `frontend/`: Aplicación web moderna construida con React, Vite y Tailwind CSS.
 
+## Comandos para arrancar el proyecto
 
-### CAMBIOS QUE SE LE HICIERON DESPUES DE LA CLASE 
+Para iniciar el proyecto completo en modo desarrollo, sigue estos pasos:
 
-## 1. En el tsconfig.json se agrego lo siguiente "types": ["node"], para que el require en el index pueda ejecutarse correctamente
-## 2. En el package.json se le agrego "jison": "jison src/controller/analizador/analizador.jison  && move analizador.js build/controller/analizador" esto hace que el codigo de TypeScript cree su correspondiente en javascript que es el que corre
-## 3. Arreglo en el analizador.jison 
+1. **Instalar dependencias globales**:
+   Asegúrate de estar en la carpeta raíz y ejecuta:
+   ```bash
+   npm install
+   cd backend && npm install
+   cd ../frontend && npm install
+   ```
+
+2. **Generar la gramática (Jison)**:
+   Si realizas cambios en el archivo `.jison`, debes regenerar el parser:
+   ```bash
+   npm run jison
+   ```
+
+3. **Ejecutar el proyecto completo**:
+   Ejecuta el siguiente comando en la raíz para arrancar tanto el Backend como el Frontend simultáneamente:
+   ```bash
+   npm start
+   ```
+
+## Acceso
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: [http://localhost:5000](http://localhost:5000)
+
+## Características del Frontend
+- **Editor de código**: Edita directamente en el navegador.
+- **Carga de archivos**: Abre tus archivos `.gst`.
+- **Consola interactiva**: Visualiza los resultados de `fmt.println` en tiempo real.
+- **Tabla de errores**: Identifica rápidamente problemas semánticos o sintácticos.
